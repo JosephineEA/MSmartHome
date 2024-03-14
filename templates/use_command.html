@@ -1,0 +1,227 @@
+{% extends "base_site.html" %}
+
+{% block title %} 申请入户 {% endblock title %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>申请入户 </h3>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            <form class="form-horizontal form-label-left" method="post">
+                                {% csrf_token %}
+                                {% if msg %}
+                                    <div class="alert alert-warning">
+
+                                        <a href="#" class="close" data-dismiss="alert">
+                                            &times;
+                                        </a>
+                                        <strong>提示！</strong>{{ msg }}
+                                    </div>
+
+                                {% endif %}
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">选择公寓 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                  <select id="flatid" class="form-control col-md-7 col-xs-12" name="flatid"
+                                                required="required" type="text" onchange="onloadRoomList()">
+
+                                        {% for foo in flatList %}
+                                                 <option value="{{ foo.flatid }}">{{ foo.flatname }}
+                                            </option>
+                                        {% endfor %}
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                    <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">选择房间 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <select id="roomid" class="form-control col-md-7 col-xs-12" name="roomid"
+                                                required="required" type="text" onchange="onloadFurnist()">
+                        
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                         <div class="item form-group onetype" >
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">选择家具 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <select id="furnid" class="form-control col-md-7 col-xs-12" name="furnid"
+                                                required="required" type="text" >
+                        
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                   <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">选择类型 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <select id="typeid" class="form-control col-md-7 col-xs-12" name="typeid"
+                                                required="required" type="text" onchange="changetype()">
+
+                                               <option value="open">开</option>
+                                               <option value="close">关</option>
+                                               <option value="other">其他</option>
+                                               <option value="multi">复合指令</option>
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                 <div class="item form-group twotype"  style="display: none">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">复合指令 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <select id="multiid" class="form-control col-md-7 col-xs-12" name="multiid">
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                        <div class="item form-group onetype">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">指令内容 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <textarea id="content" class="form-control col-md-7 col-xs-12" name="content">
+
+                                           </textarea>
+
+
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button id="send" type="button" class="btn btn-success" onclick="submitNow()">
+                                     下达
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <!-- validator -->
+    <script src="/static/vendors/validator/validator.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+
+        onloadRoomList()
+
+    function onloadRoomList(){
+
+        var flatid=$("#flatid").val()
+        $.get("/api/room/list/?flatid="+flatid,function (data){
+            var roomid=$("#roomid")
+            var data2=data.data
+             $("#roomid").html("")
+            for(var i in data2){
+                $("#roomid").append("<option value='"+data2[i]['roomid']+"'>"+data2[i]['roomname']+"</option>");
+
+            }
+
+            $("#furnid").html("")
+            onloadFurnist(data2[0]['roomid'])
+
+        })
+    }
+        function onloadFurnist(){
+        var roomid=$("#roomid").val()
+        $.get("/api/furn/list/?roomid="+roomid,function (data){
+            var data2=data.data
+             $("#furnid").html("")
+            for(var i in data2){
+                $("#furnid").append("<option value='"+data2[i]['furnitureid']+"'>"+data2[i]['furniturename']+"</option>");
+
+            }
+        })
+    }
+    function changetype(){
+        var type=$("#typeid").val()
+
+        if (type=="multi"){
+                    var flatid=$("#flatid").val()
+
+                   $.get("/api/multi/list/?flatid="+flatid,function (data){
+            var data2=data.data
+            for(var i in data2){
+
+                $("#multiid").append("<option value='"+data2[i]['multicommandid']+"'>"+data2[i]['multicommandname']+"</option>");
+
+            }
+        })
+            $(".twotype").css("display","block")
+            $(".onetype").css("display","none")
+        }else{
+            $(".twotype").css("display","none")
+            $(".onetype").css("display","block")
+        }
+    }
+    function submitNow(){
+            var roomid=$("#roomid").val()
+            var multiid=$("#multiid").val()
+            var flatid=$("#flatid").val()
+            var typeid=$("#typeid").val()
+            var content=$("#content").val()
+            var furnid=$("#furnid").val()
+      $.post("/use/comand/",{"roomid":roomid,"multiid":multiid,"flatid":flatid,"typeid":typeid,"content":content,"furnid":furnid},function (data){
+
+
+          if (data['code']==200){
+ swal("成功!", data['msg'], "success")
+
+          }else{
+            swal("成功!", data['msg'], "error")
+
+          }
+      })
+    }
+    </script>
+{% endblock javascripts %}

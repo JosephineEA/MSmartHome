@@ -1,0 +1,111 @@
+{% extends "base_site.html" %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>角色管理 <small></small></h3>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                        <a type="button" class="btn btn-primary" href="/role/option/">添加</a>
+
+                                </div>
+
+
+                            </div>
+                           {% if msg %}
+                                    <div class="alert alert-warning">
+
+                                        <a href="#" class="close" data-dismiss="alert">
+                                            &times;
+                                        </a>
+                                        <strong>警告！</strong>{{ msg }}
+                                    </div>
+
+                                {% endif %}
+
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+
+                                    <th>角色编号</th>
+                                    <th>橘色名称</th>
+
+
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for datum in page %}
+                                    <tr>
+                                        <td>{{ datum.roleid }}</td>
+                                        <td>{{ datum.rolename }}</td>
+
+
+                                        <td>
+                                            <a type="button" class="btn btn-danger"
+                                               href="/role/del/?id={{ datum.roleid }}">删除</a>
+                        <a type="button" class="btn btn-danger"
+                                               href="/role/option/?id={{ datum.roleid }}">编辑</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                            <ul class="pagination">
+
+                                {% for foo in page.paginator.page_range %}
+                                    {% ifequal foo page.number %}
+                                        <li class="active"><a href="/role/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="/role/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+
+                                    {% endifequal %}
+                                {% endfor %}
+
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}
+
+
+

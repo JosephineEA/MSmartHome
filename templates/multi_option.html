@@ -1,0 +1,152 @@
+{% extends "base_site.html" %}
+
+{% block title %} 复合指令管理 {% endblock title %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>{% if atom %}
+                        复合指令修改
+                    {% else %}
+                        符合指令增加
+                    {% endif %} </h3>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            <form class="form-horizontal form-label-left" method="post">
+                                {% csrf_token %}
+                                {% if msg %}
+                                    <div class="alert alert-warning">
+
+                                        <a href="#" class="close" data-dismiss="alert">
+                                            &times;
+                                        </a>
+                                        <strong>警告！</strong>{{ msg }}
+                                    </div>
+
+                                {% endif %}
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">复合指令编号 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="mid" class="form-control col-md-7 col-xs-12" name="multicommandid" onblur="changeid()"
+                                               required="required" type="text"
+                                               value="{% if multi %}{{ multi.multicommandid }}{% endif %}"                      >
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">复合指令名称 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="mname" class="form-control col-md-7 col-xs-12" name="multicommandname"  onblur="changename()"
+                                               required="required" type="text"
+                                               value="{% if multi %}{{ multi.multicommandname }}{% endif %}">
+                                    </div>
+                                </div>
+
+                                 <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">原子指令ID</label>
+                  <div class="col-md-6 col-sm-9 col-xs-12">
+         <select id="name" class="form-control col-md-7 col-xs-12" name="atomcommandid"
+                                                required="required" type="text"
+                                                value="{% if multi %}{{ multi.atomcommandid.atomcommandid }}{% endif %}">
+                                        {% for foo in atomList %}
+                                                 <option value="{{ foo.atomcommandid }}" {% ifequal multi.atomcommandid.atomcommandid  foo.atomcommandid %}selected
+                                            {% endifequal %}>{{ foo.content }}
+                                            </option>
+                                        {% endfor %}
+
+
+
+                                        </select>
+                  </div>
+                </div>
+                                  <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">步骤 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" class="form-control col-md-7 col-xs-12" name="steps"
+                                               required="required" type="number"
+                                               value="{% if multi %}{{ multi.steps }}{% endif %}">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <a type="submit" class="btn btn-primary" href="/atom/list">返回</a>
+                                        <button id="send" type="submit" class="btn btn-success">
+                                            {% if atom %}
+                                                编辑
+                                            {% else %}
+                                                添加
+                                            {% endif %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <!-- validator -->
+    <script src="/static/vendors/validator/validator.js"></script>
+    <script>
+    var multiidList=[]
+        {% for foo in multi1List %}
+        multiidList.push("{{ foo }}")
+        {% endfor %}
+
+        var multinameList=[]
+        {% for foo in multi2List %}
+        multinameList.push("{{ foo }}")
+        {% endfor %}
+    function changeid(){
+            var id=$("#mid").val()
+            var index=multiidList.indexOf(id)
+
+        var name=multinameList[index]
+        if (name!==undefined){
+            $("#mname").val(name)
+        }else{
+
+        }
+
+    }
+        function changename(){
+               var mname=$("#mname").val()
+            var index=multinameList.indexOf(mname)
+
+        var id=multiidList[index]
+        if (id!==undefined){
+            $("#mid").val(id)
+        }else{
+
+        }
+    }
+
+    </script>
+{% endblock javascripts %}

@@ -1,0 +1,145 @@
+{% extends "base_site.html" %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>用户管理 <small></small></h3>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                               <div class="row">
+                                    <div class="col-sm-6" style="margin-top: -15px">
+                                        <form class="bs-example bs-example-form" role="form">
+                                            <div class="row">
+                                                <br>
+                                                <div class="col-lg-10">
+                                                    <div class="input-group">
+                                                        <select type="text" class="form-control" name="flatid">
+                                                            {% for foo in flatlist %}
+                                                                <option value="{{ foo.flatid }}" {% ifequal foo.flatid flatid %} selected{% endifequal %}>{{ foo.flatname }}</option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                        <span class="input-group-btn">
+                        <button class="btn btn-info" type="submit">进入</button>
+                    </span>
+                                                    </div><!-- /input-group -->
+                                                </div><!-- /.col-lg-6 -->
+                                            </div><!-- /.row -->
+                                        </form>
+
+                                    </div>
+                                </div>
+                           {% if msg %}
+                                    <div class="alert alert-warning">
+
+                                        <a href="#" class="close" data-dismiss="alert">
+                                            &times;
+                                        </a>
+                                        <strong>警告！</strong>{{ msg }}
+                                    </div>
+
+                                {% endif %}
+
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+
+                                    <th>编号</th>
+                                    <th>用户ID</th>
+                                    <th>用户名称</th>
+                                    <th>角色ID</th>
+                                    <th>角色名称</th>
+                                    <th>是否成功入户</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for datum in page %}
+                                    <tr>
+                                        <td>{{ datum.number }}</td>
+                                        <td>{{ datum.userid.userid }}</td>
+                                        <td>{{ datum.userid.username }}</td>
+                                        <td>{{ datum.roleid.roleid }}</td>
+                                        <td>{{ datum.roleid.rolename }}</td>
+                                        <td>{% ifequal datum.ifentered '0' %}
+                                            否
+                                            {% else %}
+                                        是
+                                        {% endifequal %}
+                                          </td>
+
+
+                                        <td>
+                                            {% ifequal datum.ifentered '0' %}
+                                                <a type="button" class="btn btn-danger"
+                                               href="/user/flat/agree/?id={{ datum.number }}{% if flatid %}&flatid={{ flatid }}{% endif %}&flag=1">同意入户</a>
+                                            {% else %}
+                                          <a type="button" class="btn btn-danger"
+                                               href="/user/flat/agree/?id={{ datum.number }}{% if flatid %}&flatid={{ flatid }}{% endif %}&flag=0">移除用户</a>
+                                        {% endifequal %}
+
+
+
+                        <a type="button" class="btn btn-danger"
+                                               href="/user/flat/edit/?id={{ datum.number }}{% if flatid %}&flatid={{ flatid }}{% endif %}">修改角色</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                            <ul class="pagination">
+
+                                {% for foo in page.paginator.page_range %}
+                                    {% ifequal foo page.number %}
+                                        <li class="active"><a href="/role/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="/role/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+
+                                    {% endifequal %}
+                                {% endfor %}
+
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}
+
+
+

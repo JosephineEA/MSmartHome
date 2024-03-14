@@ -1,0 +1,42 @@
+{% extends "base_site.html" %}
+
+{% block title %} Dashboard 1 {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main" style="text-align: center">
+
+  <h1 style="margin-top: 300px">欢迎进入智能家具管理系统</h1>
+  <h1 style="margin-top: 100px">{{ request.session.userinfo.username }}</h1>
+
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- Chart.js -->
+  <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+  <!-- gauge.js -->
+  <script src="/static/vendors/gauge.js/dist/gauge.min.js"></script>
+  <!-- Skycons -->
+  <script src="/static/vendors/skycons/skycons.js"></script>
+  <!-- Flot -->
+  <script src="/static/vendors/Flot/jquery.flot.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.pie.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.time.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.stack.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.resize.js"></script>
+  <!-- Flot plugins -->
+  <script src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+  <script src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+  <script src="/static/vendors/flot.curvedlines/curvedLines.js"></script>
+  <!-- DateJS -->
+  <script src="/static/vendors/DateJS/build/date.js"></script>
+  <!-- JQVMap -->
+  <script src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
+  <script src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,126 @@
+{% extends "base_site.html" %}
+
+{% block title %} 原子指令管理 {% endblock title %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>{% if atom %}
+                        原子指令修改
+                    {% else %}
+                        原子指令增加
+                    {% endif %} </h3>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            <form class="form-horizontal form-label-left" method="post">
+                                {% csrf_token %}
+                                {% if msg %}
+                                    <div class="alert alert-warning">
+
+                                        <a href="#" class="close" data-dismiss="alert">
+                                            &times;
+                                        </a>
+                                        <strong>警告！</strong>{{ msg }}
+                                    </div>
+
+                                {% endif %}
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">指令编号 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" class="form-control col-md-7 col-xs-12" name="atomid"
+                                               required="required" type="text"
+                                               value="{% if atom %}{{ atom.atomcommandid }}{% endif %}"                             {% if role %}
+                                            readonly
+{% else %}
+                            {% endif %} >
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">指令内容 <span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" class="form-control col-md-7 col-xs-12" name="content"
+                                               required="required" type="text"
+                                               value="{% if atom %}{{ atom.content }}{% endif %}">
+                                    </div>
+                                </div>
+{#                                  <div class="item form-group">#}
+{#                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">家具编号 <span#}
+{#                                            class="required">*</span>#}
+{#                                    </label>#}
+{#                                    <div class="col-md-6 col-sm-6 col-xs-12">#}
+{#                                        <input id="name" class="form-control col-md-7 col-xs-12" name="rolename"#}
+{#                                               required="required" type="text"#}
+{#                                               value="{% if atom %}{{ atom.rolename }}{% endif %}">#}
+{#                                    </div>#}
+{#                                </div>#}
+                                 <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">家具编号</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select class="select2_group form-control" name="furnitureid" value="{{ atom.furnitureid.furnitureid }}">
+                        {% for foo in furnitureList2 %}
+                                  <optgroup label="{{ foo.flatname }}-{{ foo.roomname }}">
+                                  {% for foo2 in foo.furnlist %}
+                                      <option value="{{ foo2.id }}"
+                                      {% ifequal atom.furnitureid.furnitureid foo2.id %}
+                                          selected
+                                              {% else %}
+                                              {% endifequal %}
+                                      >{{ foo2.name }}</option>
+
+                                  {% endfor %}
+
+                      </optgroup>
+
+                        {% endfor %}
+
+
+                    </select>
+                  </div>
+                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <a type="submit" class="btn btn-primary" href="/atom/list">返回</a>
+                                        <button id="send" type="submit" class="btn btn-success">
+                                            {% if atom %}
+                                                编辑
+                                            {% else %}
+                                                添加
+                                            {% endif %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <!-- validator -->
+    <script src="/static/vendors/validator/validator.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,110 @@
+{% extends "base_site.html" %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>家具指令管理 <small></small></h3>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                        <a type="button" class="btn btn-primary" href="/atom/option/">添加</a>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+
+                                    <th>原子指令ID</th>
+                                    <th>家具ID</th>
+                                    <th>家具名称</th>
+                                    <th>指令内容</th>
+
+                                    <th>公寓ID</th>
+                                    <th>公寓名称</th>
+                                      <th>房间ID</th>
+                                    <th>房间名称</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for datum in page %}
+                                    <tr>
+                                        <td>{{ datum.atomcommandid }}</td>
+                                        <td>{{ datum.furnitureid.furnitureid }}</td>
+                                        <td>{{ datum.furnitureid.furniturename }}</td>
+                                        <td>{{ datum.content}}</td>
+                                        <td>{{ datum.furnitureid.roomid.flatid.flatid }}</td>
+                                        <td>{{ datum.furnitureid.roomid.flatid.flatname }}</td>
+                                        <td>{{ datum.furnitureid.roomid.roomid }}</td>
+                                        <td>{{ datum.furnitureid.roomid.roomname }}</td>
+                                        <td>
+                                            <a type="button" class="btn btn-danger"
+                                               href="/atom/del/?id={{ datum.atomcommandid }}">删除</a>
+                        <a type="button" class="btn btn-danger"
+                                               href="/atom/option/?id={{ datum.atomcommandid }}">编辑</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                            <ul class="pagination">
+
+                                {% for foo in page.paginator.page_range %}
+                                    {% ifequal foo page.number %}
+                                        <li class="active"><a href="/atom/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="/atom/list/?page={{ foo }}">{{ foo }}</a>
+                                        </li>
+
+                                    {% endifequal %}
+                                {% endfor %}
+
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}
+
+
+

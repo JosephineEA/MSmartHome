@@ -1,0 +1,54 @@
+<div class="left_col scroll-view">
+  <div class="navbar nav_title" style="border: 0;">
+    <a href="index.html" class="site_title"><i class="fa fa-spinner"></i> <span>智能家居系统</span></a>
+  </div>
+
+  <div class="clearfix"></div>
+
+
+  <!-- /menu profile quick info -->
+
+  <br />
+
+  <!-- sidebar menu -->
+  <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+    <div class="menu_section">
+      <ul class="nav side-menu">
+          {% ifequal request.session.userinfo.type '1'  %}
+                <li><a><i class="fa fa-home"></i> 房屋管理 <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/flat/list/">公寓管理</a></li>
+            <li><a href="/room/list/">房间管理</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-edit"></i> 家具管理 <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/furniture/list/">家具管理</a></li>
+            <li><a href="/atom/list/">管理原子指令</a></li>
+            <li><a href="/multi/list/">管理复合指令</a></li>
+
+          </ul>
+        </li>
+        <li><a><i class="fa fa-desktop"></i> 角色管理<span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/role/list/">录入角色</a></li>
+            <li><a href="/role/limit/list/">设置角色权限</a></li>
+            <li><a href="/user/flat/list/">管理用户</a></li>
+          </ul>
+        </li>
+          {% else %}
+                      <li><a href="/apply/flat/"><i class="fa fa-home"></i> 申请入户</a></li>
+                      <li><a href="/comannd/list/"><i class="fa fa-home"></i> 浏览指令</a></li>
+                      <li><a href="/use/comand/"> <i class="fa fa-home"></i> 使用</a></li>
+                      <li><a href="/use/comand/list/"><i class="fa fa-home"></i> 使用情况</a></li>
+
+
+          {% endifequal %}
+
+
+      </ul>
+    </div>
+
+  </div>
+
+</div>
